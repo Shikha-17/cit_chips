@@ -26,18 +26,25 @@ documentation:
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
 
+    This implements a very simple 7-segment [cellular automaton](https://en.wikipedia.org/wiki/Cellular_automaton) from ~200 basic logic gates. At each clock cycle, each of the seven segments is set to "alive" or "dead" based on a simple set of rules:
+    
+    1. If a segment was "alive" in the previous time step and has exactly one living neighbor, it survives.
+    2. If a segment was "dead" (or "empty") in the previous time step and has exactly two living neighbors, if becomes alive ("gives birth")
+
+    A "neighbor" is any segment it touches, tip to tip. This means that the top and bottom segments only have two neighbors, while the side segments have three neighbors and the center segment has four neighbors.
+
+    **Implementation:**
+    
     See the [Wokwi gate layout and simulation](https://wokwi.com/projects/357752736742764545). At a high level:
     
-    * Seven flip-flops hold the cellular automaton's internal state, which is also displayed in the seven-segment display.
-    * Combinatorial logic generates the next state for each segment based on its neighbors (the segments that touch it end to end: note that different segments have different numbers of neighbors), according to this ruleset:
-      * Living segments with exactly one living neighbor survive, and all others die.
-      * Dead segments with exactly two living neighbors come to life.
-    * When either the system clock or a user-toggled clock input goes high, this new state is latched in.
+    * Seven flip-flops hold the cellular automaton's internal state, which is also wired to the seven-segment display.
+    * Combinatorial logic generates the next state for each segment based on its neighbors.
+    * When either the system clock or a user-toggled clock input goes high, this new state is latched in to the flip-flips.
     * There's minor additional support logic to let the user manually shift in an initial condition and handle clock dividing.
-
+    
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
-    For full details, see the [github README](https://github.com/icegoat9/tinytapeout03-7seglife) doc link. But at a high level, assuming the IC is mounted on the standard tinytapeout PCB which provides dip switches, clock, and a seven-segment display for output:
+    For full details with some examples, see the [github README](https://github.com/icegoat9/tinytapeout03-7seglife) doc link. But at a high level, assuming the IC is mounted on the standard tinytapeout PCB which provides dip switches, clock, and a seven-segment display for output:
     
     1. Set all dip switches off, and the clock slide switch to the 'manual' clock side.
     2. Power on the system. An arbitrary state may appear on the 7-segment display.
@@ -65,32 +72,6 @@ documentation:
     3. What fraction settle into a static living pattern vs an infinite cycle between multiple different patterns?
     4. What is the longest sequence of unique states a pattern travels through (stop counting once it reaches a previously-visited state, beginning an infinite loop)?
     5. What is the longest cycle of unique states that repeats in a loop?
-
-    Detailed explanation:
-    
-    From the initial state shown in Step 0 below (where thin lines represent dark/dead segments, and solid blocks represent lighted/living segments), the automaton will evolve through each of the following states:
-    ```
-    Step 0         Step 1         Step 2         Step 3         Step 4
-
-     ███            ███            ---            ---            --- 
-    █   |          █   █          |   |          |   |          |   |          
-    █   |          █   █          |   |          |   |          |   |   
-     ---            ███            ---            ███            --- 
-    |   █          |   |          █   █          |   |          █   █
-    |   █          |   |          █   █          |   |          █   █
-     ---            ---            ---            ███            ---
-    ```
-    To determine the state in Step 1:
-    * The two connected segments in the upper left of Step 0 survive (as they each have one living neighbor)
-    * The disconnected segment in the lower right of Step 0 dies (zero neighbors)
-    * Two segments are born in previously-empty locations: the upper right (it has the top segment and lower right segment in Step 0 as two living neighbors), and the middle segment (the upper left and lower right are its two living neighbors).
-
-    During Step 2, all the four segments in Step 1 die (two neighbors), but two new segments are born.
-
-    During Step 3, two segments die and two more are born.
-
-    During Step 4, two segments die and two more are born, and we realize it's in an infinite loop between this state and the previous state.
-
 
 # A description of what the inputs do
   inputs:           
