@@ -30,8 +30,8 @@ documentation:
     
     * Seven flip-flops hold the cellular automaton's internal state, which is also displayed in the seven-segment display.
     * Combinatorial logic generates the next state for each segment based on its neighbors (the segments that touch it end to end: note that different segments have different numbers of neighbors), according to this ruleset:
-      1. Living segments with exactly one living neighbor survive, and all others die.
-      2. Dead segments with exactly two living neighbors come to life.
+      * Living segments with exactly one living neighbor survive, and all others die.
+      * Dead segments with exactly two living neighbors come to life.
     * When either the system clock or a user-toggled clock input goes high, this new state is latched in.
     * There's minor additional support logic to let the user manually shift in an initial condition and handle clock dividing.
 
@@ -69,27 +69,27 @@ documentation:
     Detailed explanation:
     
     From the initial state shown in Step 0 below (where thin lines represent dark/dead segments, and solid blocks represent lighted/living segments), the automaton will evolve through each of the following states:
-```
-Step 0         Step 1         Step 2         Step 3         Step 4
+    ```
+    Step 0         Step 1         Step 2         Step 3         Step 4
 
- ███            ███            ---            ---            --- 
-█   |          █   █          |   |          |   |          |   |          
-█   |          █   █          |   |          |   |          |   |   
- ---            ███            ---            ███            --- 
-|   █          |   |          █   █          |   |          █   █
-|   █          |   |          █   █          |   |          █   █
- ---            ---            ---            ███            ---
-```
-To determine the state in Step 1:
-* The two connected segments in the upper left of Step 0 survive (as they each have one living neighbor)
-* The disconnected segment in the lower right of Step 0 dies (zero neighbors)
-* Two segments are born in previously-empty locations: the upper right (it has the top segment and lower right segment in Step 0 as two living neighbors), and the middle segment (the upper left and lower right are its two living neighbors).
+     ███            ███            ---            ---            --- 
+    █   |          █   █          |   |          |   |          |   |          
+    █   |          █   █          |   |          |   |          |   |   
+     ---            ███            ---            ███            --- 
+    |   █          |   |          █   █          |   |          █   █
+    |   █          |   |          █   █          |   |          █   █
+     ---            ---            ---            ███            ---
+    ```
+    To determine the state in Step 1:
+    * The two connected segments in the upper left of Step 0 survive (as they each have one living neighbor)
+    * The disconnected segment in the lower right of Step 0 dies (zero neighbors)
+    * Two segments are born in previously-empty locations: the upper right (it has the top segment and lower right segment in Step 0 as two living neighbors), and the middle segment (the upper left and lower right are its two living neighbors).
 
-During Step 2, all the four segments in Step 1 die (two neighbors), but two new segments are born.
+    During Step 2, all the four segments in Step 1 die (two neighbors), but two new segments are born.
 
-During Step 3, two segments die and two more are born.
+    During Step 3, two segments die and two more are born.
 
-During Step 4, two segments die and two more are born, and we realize it's in an infinite loop between this state and the previous state.
+    During Step 4, two segments die and two more are born, and we realize it's in an infinite loop between this state and the previous state.
 
 
 # A description of what the inputs do
