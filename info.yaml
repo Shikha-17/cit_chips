@@ -33,7 +33,7 @@ documentation:
 
     A "neighbor" is any segment it touches, tip to tip. This means that the top and bottom segments only have two neighbors, while the side segments have three neighbors and the center segment has four neighbors.
 
-    **Implementation:**
+    **Implementation**
     
     See the [Wokwi gate layout and simulation](https://wokwi.com/projects/357752736742764545). At a high level:
     
@@ -44,7 +44,7 @@ documentation:
     
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
-    For full details with some examples, see the [github README](https://github.com/icegoat9/tinytapeout03-7seglife) doc link. But at a high level, assuming the IC is mounted on the standard tinytapeout PCB which provides dip switches, clock, and a seven-segment display for output:
+    For full details with some examples, see the [github README](https://github.com/icegoat9/tinytapeout03-7seglife) doc link. At a high level, assuming the IC is mounted on the standard tinytapeout PCB which provides dip switches, clock, and a seven-segment display for output:
     
     1. Set all dip switches off, and the clock slide switch to the 'manual' clock side.
     2. Power on the system. An arbitrary state may appear on the 7-segment display.
@@ -62,10 +62,11 @@ documentation:
     If you want to load a custom initial state:
     
     1. Set dip switch 4 off ('load mode').
-    2. Toggle dip switches 2 and/or 3 on and off up to seven times total, to shift in 0 and 1 values to the automaton's internal state (one suggested starting pattern: toggle dip switch 3 on and then off three times, then toggle dip switch 2 on and then off twice: this should display a 'lowercase u' on the 7-segment display).
+    2. Toggle dip switches 2 and/or 3 on and off up to seven times total, to shift in 0 and 1 values to the automaton's internal state
+        * One suggested starting pattern: toggle dip switch 3 on and off three times, then toggle dip switch 2 on and off twice: this should display a 'lowercase u' on the 7-segment display
     3. Set dip switch 4 on and run manually or automatically as above.
 
-    Exercises / puzzles for the reader:
+    **Exercises / puzzles for the reader:**
     
     1. How many unique initial states are there, disregarding equivalent mirrored/rotated states? (there are 2^7 = 128 possible initial states, but many are equivalent)
     2. What fraction of these initial states survive? (i.e. don't eventually die out)
