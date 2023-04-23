@@ -29,8 +29,8 @@ documentation:
     See the [Wokwi gate layout and simulation](https://wokwi.com/projects/357752736742764545). At a high level:
     
     * Seven flip-flops hold the cellular automaton's internal state, which is also displayed in the seven-segment display.
-    * Combinatorial logic generates the next state for each segment based on its neighbors, according to the ruleset:
-      1. Living segments with exactly one living neighbor (another segment that touches it end to end) survive, and all others die.
+    * Combinatorial logic generates the next state for each segment based on its neighbors (the segments that touch it end to end: note that different segments have different numbers of neighbors), according to this ruleset:
+      1. Living segments with exactly one living neighbor survive, and all others die.
       2. Dead segments with exactly two living neighbors come to life.
     * When either the system clock or a user-toggled clock input goes high, this new state is latched in.
     * There's minor additional support logic to let the user manually shift in an initial condition and handle clock dividing.
@@ -39,23 +39,24 @@ documentation:
   how_to_test:  |
     For full details and a few 'exercises for the reader', see the [github README](https://github.com/icegoat9/tinytapeout03-7seglife) doc link. But at a high level, assuming the IC is mounted on the standard tinytapeout PCB which provides dip switches, clock, and a seven-segment display for output:
     
-    * Set all dip switches off and the clock slide switch to the 'manual' clock side.
-    * Power on the system. An arbitrary state may appear on the 7-segment display.
-    * Set dip switch 4 on ('run mode').
-    * Toggle dip switch 1 on and off to advance the automaton to the next state, you should see the 7-segment display update.
+    1. Set all dip switches off, and the clock slide switch to the 'manual' clock side.
+    2. Power on the system. An arbitrary state may appear on the 7-segment display.
+    3. Set dip switch 4 on ('run mode').
+    4. Toggle dip switch 1 on and off to advance the automaton to the next state, you should see the 7-segment display update.
 
-    If you want to watch it run automatically (which may quickly settle on an empty state or a static pattern, depending on start state)...
+    If you want to watch it run automatically (which may quickly settle on an empty state or a static pattern, depending on start state):
     
-    * Set the PCB clock divider to the maximum clock division (255). With a system clock of 6.25kHz, the clock input should now be ~24.5Hz.
-    * Set dip switches 5 and 7 on to add a reasonable additional clock divider (see docs for more details on a higher or lower divider).
-    * Set dip switch 4 on.
-    * Switch the clock slide switch to the 'system clock' side. The display should advance at roughly 1.5Hz if I've done math correctly.
-
-    If you want to load an initial state...
+    1. Set the PCB clock divider to the maximum clock division (255). With a system clock of 6.25kHz, the clock input should now be ~24.5Hz.
+    2. Set dip switches 5 and 7 on to add an additional 16x clock divider.
+    3. Set dip switch 4 on.
+    4. Switch the clock slide switch to the 'system clock' side. The display should advance at roughly 1.5Hz (f I've done math correctly)
+    5. To run faster or slower, set a combination of dip switches 5 (8x clock divider), 6 (4x divider), and 7 (2x divider)
     
-    * Set dip switch 4 off ('load mode').
-    * Toggle dip switches 2 and/or 3 on and off seven times total, to shift in 0 and 1 values to the automaton internal state.
-    * Set dip switch 4 on and run manually or automatically as above.
+    If you want to load a custom initial state:
+    
+    1. Set dip switch 4 off ('load mode').
+    2. Toggle dip switches 2 and/or 3 on and off seven times total, to shift in 0 and 1 values to the automaton's internal state.
+    3. Set dip switch 4 on and run manually or automatically as above.
 
 # A description of what the inputs do
   inputs:           
@@ -84,5 +85,5 @@ documentation:
   external_hw:  "None. Could add debounced momentary pushbuttons in parallel with dip switches 1,2,3 to make loading in new patterns and stepping through a run easier."      # Describe any external hardware needed
   discord:      "icegoat9#3798"      # Your discord handle, used for communication and automatically assigning tapeout role after a submission
   doc_link:     "https://github.com/icegoat9/tinytapeout03-7seglife/blob/main/README.md"      # URL to longer form documentation, eg the README.md in your repository
-  clock_hz:     0       # Clock frequency in Hz (if required)
+  clock_hz:     6250       # Clock frequency in Hz (if required)
   picture:      ""      # relative path to a picture in your repository
