@@ -49,22 +49,48 @@ documentation:
     1. Set the PCB clock divider to the maximum clock division (255). With a system clock of 6.25kHz, the clock input should now be ~24.5Hz.
     2. Set dip switches 5 and 7 on to add an additional 16x clock divider.
     3. Set dip switch 4 on.
-    4. Switch the clock slide switch to the 'system clock' side. The display should advance at roughly 1.5Hz (f I've done math correctly)
+    4. Switch the clock slide switch to the 'system clock' side. The display should advance at roughly 1.5Hz (if I've done math correctly)
     5. To run faster or slower, set a combination of dip switches 5 (8x clock divider), 6 (4x divider), and 7 (2x divider)
     
     If you want to load a custom initial state:
     
     1. Set dip switch 4 off ('load mode').
-    2. Toggle dip switches 2 and/or 3 on and off seven times total, to shift in 0 and 1 values to the automaton's internal state (one suggested starting pattern: toggle dip switch 3 on and then off three times, then toggle dip switch 2 on and then off twice: this should display a 'lowercase u' on the 7-segment display).
+    2. Toggle dip switches 2 and/or 3 on and off up to seven times total, to shift in 0 and 1 values to the automaton's internal state (one suggested starting pattern: toggle dip switch 3 on and then off three times, then toggle dip switch 2 on and then off twice: this should display a 'lowercase u' on the 7-segment display).
     3. Set dip switch 4 on and run manually or automatically as above.
 
     Exercises / puzzles for the reader:
     
-    1. How many unique initial states are there, disregarding equivalent mirrored/rotated states? (there are 2^7 = 128 possible initial states but many are equivalent)
+    1. How many unique initial states are there, disregarding equivalent mirrored/rotated states? (there are 2^7 = 128 possible initial states, but many are equivalent)
     2. What fraction of these initial states survive? (i.e. don't eventually die out)
     3. What fraction settle into a static living pattern vs an infinite cycle between multiple different patterns?
     4. What is the longest sequence of unique states a pattern travels through (stop counting once it reaches a previously-visited state, beginning an infinite loop)?
-    5. What is the longest cycle of unique states that repeats in a loop? (there's an example of a period 2 cycle in the example above)
+    5. What is the longest cycle of unique states that repeats in a loop?
+
+    Detailed explanation:
+    
+    From the initial state shown in Step 0 below (where thin lines represent dark/dead segments, and solid blocks represent lighted/living segments), the automaton will evolve through each of the following states:
+```
+Step 0         Step 1         Step 2         Step 3         Step 4
+
+ ███            ███            ---            ---            --- 
+█   |          █   █          |   |          |   |          |   |          
+█   |          █   █          |   |          |   |          |   |   
+ ---            ███            ---            ███            --- 
+|   █          |   |          █   █          |   |          █   █
+|   █          |   |          █   █          |   |          █   █
+ ---            ---            ---            ███            ---
+```
+To determine the state in Step 1:
+* The two connected segments in the upper left of Step 0 survive (as they each have one living neighbor)
+* The disconnected segment in the lower right of Step 0 dies (zero neighbors)
+* Two segments are born in previously-empty locations: the upper right (it has the top segment and lower right segment in Step 0 as two living neighbors), and the middle segment (the upper left and lower right are its two living neighbors).
+
+During Step 2, all the four segments in Step 1 die (two neighbors), but two new segments are born.
+
+During Step 3, two segments die and two more are born.
+
+During Step 4, two segments die and two more are born, and we realize it's in an infinite loop between this state and the previous state.
+
 
 # A description of what the inputs do
   inputs:           
